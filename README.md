@@ -1,7 +1,6 @@
 
-# ccape's Microservice Projects for FCC
+# ccape's Portfolio
 
 ### Description:
 
-This is a portfolio application which displays the
-API and Microservices work as part of the freecodecamp curriculum.
+This is a portfolio application that contains ccape's API and Microservices apps from FCC ( freecodecamp) curriculum.
