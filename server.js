@@ -32,22 +32,8 @@ app.get("/api",(req, res)=>{
   res.json({
     "unix": nowDate.getTime(),
     "utc": nowDate.toUTCString()
-});
-
+  });
 })
-
-// app.get("/api/:date", (req, res)=>{
-//   let date = req.params.date;
-//   let pdate = parseInt(date);
-//   let npud = new Date(pdate)
-//   res.json({
-//     "unix": npud.getTime(),
-//     "utc": npud.toUTCString()
-//
-// })
-// })
-
-
 
 app.get("/api/:date", function (req, res)  {
   let date = req.params.date;
@@ -58,11 +44,8 @@ app.get("/api/:date", function (req, res)  {
     res.json({
       "unix": npud.getTime(),
       "utc": npud.toUTCString()
-
   })
-  }
-
-
+}
   if(passedInValue == "Invalid Date"){
     res.json({
       "error": "Invalid Date"
