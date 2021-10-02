@@ -36,24 +36,32 @@ app.get("/api",(req, res)=>{
 
 })
 
-app.get("/api/:date", (req, res)=>{
-  let date = req.params.date;
-  let pdate = parseInt(date);
-  let npud = new Date(pdate)
-  res.json({
-    "unix": npud.getTime(),
-    "utc": npud.toUTCString()
-
-})
-})
+// app.get("/api/:date", (req, res)=>{
+//   let date = req.params.date;
+//   let pdate = parseInt(date);
+//   let npud = new Date(pdate)
+//   res.json({
+//     "unix": npud.getTime(),
+//     "utc": npud.toUTCString()
+//
+// })
+// })
 
 
 
 app.get("/api/:date", function (req, res)  {
   let date = req.params.date;
+  let pdate = parseInt(date);
+  let npud = new Date(pdate)
   let passedInValue = new Date(date);
+  if(date.length === 13){
+    res.json({
+      "unix": npud.getTime(),
+      "utc": npud.toUTCString()
 
-  console.log(passedInValue, "<====")
+  })
+  }
+
 
   if(passedInValue == "Invalid Date"){
     res.json({
