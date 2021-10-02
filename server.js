@@ -33,6 +33,13 @@ app.get("/api",(req, res)=>{
     "utc": nowDate.toUTCString()
 });
 
+app.get("/api/:date", (req, res)=>{
+  let unixDate = req.params.date;
+  if(isInteger(parseInt(unixDate))){
+    console.log('is an integer')
+  }
+})
+
 })
 app.get("/api/:date", function (req, res)  {
   let date = req.params.date;
