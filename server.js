@@ -34,8 +34,10 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-
-app.get("/api",(req, res)=>{
+//////////////////////////////
+// ---- Timestap ----      //
+////////////////////////////
+app.get("/api/timestamp/",(req, res)=>{
   let nowDate = new Date();
   res.json({
     "unix": nowDate.getTime(),
@@ -43,7 +45,7 @@ app.get("/api",(req, res)=>{
   });
 })
 
-app.get("/api/:date", function (req, res)  {
+app.get("/api/timestamp/:date", function (req, res)  {
   let date = req.params.date;
   let pdate = parseInt(date);
   let npud = new Date(pdate)
@@ -65,6 +67,25 @@ app.get("/api/:date", function (req, res)  {
     })
   }
 });
+/////////////////////////////////////
+// Request Header Parser ----------//
+/////////////////////////////////////
+app.get('/api/whoami',(req,res)=>{
+
+  res.json({
+    "ipaddress": req.ip,
+    "language": req.headers["accept-language"],
+    "software": req.headers["user-agent"]
+  })
+})
+
+
+
+
+
+
+
+
 // listen for requests :)
 // var listener = app.listen(process.env.PORT, function () {
 //   console.log('Your app is listening on port ' + listener.address().port);
