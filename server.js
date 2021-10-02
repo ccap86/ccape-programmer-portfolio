@@ -19,10 +19,13 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+app.get("/requestHeaderParser", function (req, res) {
+  res.sendFile(__dirname + '/views/requestHeaderParser.html');
+});
+
 app.get("/timestamp", function (req, res) {
   res.sendFile(__dirname + '/views/timestamp.html');
 });
-
 
 
 // your first API endpoint...
