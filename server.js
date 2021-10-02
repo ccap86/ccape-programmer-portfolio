@@ -26,6 +26,16 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+
+app.get("/api",(req, res)=>{
+  let nowDate = new Date();
+  res.json({
+    "unix": nowDate.getTime(),
+    "utc": nowDate.toUTCString()
+});
+
+})
+
 app.get("/api/:date", (req, res)=>{
   let date = req.params.date;
   let pdate = parseInt(date);
@@ -37,14 +47,8 @@ app.get("/api/:date", (req, res)=>{
 })
 })
 
-app.get("/api",(req, res)=>{
-  let nowDate = new Date();
-  res.json({
-    "unix": nowDate.getTime(),
-    "utc": nowDate.toUTCString()
-});
 
-})
+
 app.get("/api/:date", function (req, res)  {
   let date = req.params.date;
   let passedInValue = new Date(date);
