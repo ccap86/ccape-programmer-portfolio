@@ -4,7 +4,9 @@ body {
 	font-family: 'Roboto', sans-serif;
 	font-size: 16px;
 	color: #222;
+	color: cyan
 	background-color: #FaFaFa;
+
 	text-align: center;
 	line-height: 1.4em;
 }
@@ -13,6 +15,7 @@ body {
 	padding: 0;
 	margin-top: 40px;
 }
+
 
 h3 {
   margin-top: 30px;
@@ -29,8 +32,9 @@ hr {
 code {
   font-family: monospace;
   padding: 2px;
-  color: black;
+  color: forestgreen;
   background-color: #fff;
+
 }
 
 ul {
