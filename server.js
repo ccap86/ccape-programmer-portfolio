@@ -1,10 +1,38 @@
 // server.js
 // where your node app starts
+// delete databae_uri before pushing to prod
+// database_uri = 'mongodb+srv://ThaneCap:Pharmacy2121!@cluster0.rsnwo.mongodb.net/Cluster0?retryWrites=true&w=majority'
 
 // init project
+require('dotenv').config()
 var express = require('express');
 var app = express();
+var mongo = require('mongodb')
+var mongoose = require('mongoose')
 var port = process.env.PORT || 3000;
+var bodyParser = require('body-parser')
+
+const { Schema } = mongoose;
+//const { nanoid } = require('nanoid')
+const shortid = require('shortid');
+///check db connection
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+  console.log("Connected successfully");
+});
+
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+//import { nanoid } from 'nanoid'
+//used for prod
+//mongoose.connect(process.env.MONGODB_URI)
+//used for testing local
+mongoose.connect(process.env.MONGODB_URI,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  });
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
@@ -26,6 +54,11 @@ app.get("/requestHeaderParser", function (req, res) {
 app.get("/timestamp", function (req, res) {
   res.sendFile(__dirname + '/views/timestamp.html');
 });
+
+app.get("/urlShortener", function (req, res) {
+  res.sendFile(__dirname + '/views/urlShortener.html');
+});
+
 
 
 // your first API endpoint...
@@ -79,8 +112,37 @@ app.get('/api/whoami',(req,res)=>{
   })
 })
 
+/////////////////////////////////////
+// URL urlShortener      ----------//
+/////////////////////////////////////
+
+// create application/json parser
 
 
+
+app.post('/api/shorturl', urlencodedParser, function (req, res) {
+  const UrlSchema = new Schema({
+    orignal_url:  String, // String is shorthand for {type: String}
+    short_id: String,
+    placeHolder:   String,
+  });
+ const shortUrl = mongoose.model('shortUrl', UrlSchema);
+
+  // create user in req.body
+  let originalUrl = req.body.url
+  let shortIdGen = shortid.generate();
+  res.json({
+    "url": req.headers["host"],
+    "orignal_url": originalUrl,
+    "short_id": shortIdGen
+  })
+})
+
+// app.post('/api/shorturl',(req, res) =>{
+//   res.json({
+//     "url": req.headers["host"]
+//   })
+// })
 
 
 
