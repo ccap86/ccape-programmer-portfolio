@@ -22,8 +22,7 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-var jsonParser = bodyParser.json()
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
 //import { nanoid } from 'nanoid'
 //used for prod
 //mongoose.connect(process.env.MONGODB_URI)
@@ -116,36 +115,52 @@ app.get('/api/whoami',(req,res)=>{
 // URL urlShortener      ----------//
 /////////////////////////////////////
 
-// create application/json parser
+// create schema and model to save data to db //
+const UrlSchema = new Schema({
+    short_url: String,
+    original_url: String,
+    suffix:  String, // String is shorthand for {type: String}
 
-
-
-app.post('/api/shorturl', urlencodedParser, function (req, res) {
-  const UrlSchema = new Schema({
-    orignal_url:  String, // String is shorthand for {type: String}
-    short_id: String,
-    placeHolder:   String,
   });
- const shortUrl = mongoose.model('shortUrl', UrlSchema);
+// create model
+const ShortURL = mongoose.model('ShortURL', UrlSchema);
 
-  // create user in req.body
-  let originalUrl = req.body.url
-  let shortIdGen = shortid.generate();
-  res.json({
-    "url": req.headers["host"],
-    "orignal_url": originalUrl,
-    "short_id": shortIdGen
+var jsonParser = bodyParser.json()
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+//get user info from endpoint
+app.post('/api/shorturl/', urlencodedParser,  (req, res) => {
+
+  let client_requested_url = req.body.url
+  let suffix = shortid.generate();
+  let newShortURL= suffix
+
+  let newURL = new ShortURL({
+    short_url: __dirname + '/api/shorturl/' + suffix,
+    original_url: client_requested_url,
+    suffix: suffix
   })
-})
 
-// app.post('/api/shorturl',(req, res) =>{
-//   res.json({
-//     "url": req.headers["host"]
-//   })
-// })
+//save to db
+  newURL.save((err, doc) => {
+    if (err) return console.error(err);
+    res.json({
+      "saved": true,
+      "short_url": newURL.short_url,
+      "original_url": newURL.original_url,
+      "suffix": newURL.suffix
+    });
+  });
+});
 
-
-
+//lookup orig from db and redirect to orig link given by user
+app.get('/api/shorturl/:suffix', (req,res) => {
+  let userGeneratedSuffix = req.params.suffix;
+  ShortURL.find({suffix: userGeneratedSuffix}).then((foundUrls) => {
+    let urlForRedirect = foundUrls[0];
+    res.redirect(urlForRedirect.original_url)
+  });
+});
 
 
 // listen for requests :)
